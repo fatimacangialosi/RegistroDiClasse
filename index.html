@@ -20,15 +20,30 @@
 	</head>
 	<body>
 		<h1>Registro di Classe</h1>
+
+		<p>per accedere o aggiungere voti ai voti selezionare lo studente</p>
 		<form id="userForm">
+			<div id="messaggi" class="messaggi"></div>
 			<p>inserire nome e cognome dello studente</p>
 			<label for="name">Nome:</label>
 			<input type="text" id="name" name="name" required />
 			<br />
 			<label for="username">Username:</label>
 			<input type="text" id="username" name="username" required />
+			<br />
 
 			<button type="submit">Invia</button>
+			<!--   settore del bottone aggiungi
+ -->
+			<div id="Aggiungi"></div>
+			<button id="aggiungiStudenteButton">Aggiungi Studente</button>
+			<ul id="listaStudenti">
+				<!-- Gli studenti verranno aggiunti qui dinamicamente -->
+			</ul>
+			<!-- 			settore del bottone rimuovi
+ -->
+			<div id="togli"></div>
+			<button id="rimuoviStudenteButton">Rimuovi Studente</button>
 		</form>
 		<script src="registroClasse.js"></script>
 	</body>

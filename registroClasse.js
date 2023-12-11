@@ -4,18 +4,40 @@ con persone omonime tipo due Mario Rossi.
 Con degli array dinamici in javascript
 ci vuole :
 *una funziona "aggiungiStudente" che pero' deve inseriserire lo studente
- in ordine alfabetico per cognome;
- *una funzione Appello che legge tutti gli studenti;
- * una funzione che aggiorna in caso di errore corregge o modifica
- * una funzione rimuoviStudente()
- * 
- * 
- * Ogni studente nel registro deve avere un nome, un cognome, e una lista di voti. 
- * Per ogni voto, dovrai registrare il punteggio ottenuto e la data della verifica.
- * Ogni studente nel registro deve avere un nome, un cognome, e una lista di voti. 
- * Per ogni voto, dovrai registrare il punteggio ottenuto e la data della verifica.
- * 
- * */
+in ordine alfabetico per cognome;
+*una funzione Appello che legge tutti gli studenti;
+* una funzione che aggiorna in caso di errore corregge o modifica
+* una funzione rimuoviStudente()
+* 
+* 
+* Ogni studente nel registro deve avere un nome, un cognome, e una lista di voti. 
+* Per ogni voto, dovrai registrare il punteggio ottenuto e la data della verifica.
+* Ogni studente nel registro deve avere un nome, un cognome, e una lista di voti. 
+* Per ogni voto, dovrai registrare il punteggio ottenuto e la data della verifica.
+* 
+* */
+// modifica del DOM//
+/* 	gestione bottoni nella pagina web per aggiungere e togliere student
+ */
+
+document
+	.getElementById("rimuoviStudenteButton")
+	.addEventListener("click", function () {
+		var studenti = [
+			"fatima cangialosi",
+			"alberto cangialosi",
+			"chiara ferrara",
+		]; // Esempio di lista degli studenti
+		var listaStudenti = document.createElement("ul");
+
+		for (var i = 0; i < studenti.length; i++) {
+			var studente = document.createElement("li");
+			studente.textContent = studenti[i];
+			listaStudenti.appendChild(studente);
+		}
+
+		document.body.appendChild(listaStudenti);
+	});
 document.addEventListener("DOMContentLoaded", function () {
 	class Studente {
 		nome;
@@ -26,61 +48,30 @@ document.addEventListener("DOMContentLoaded", function () {
 			this.nome = nome;
 			this.cognome = cognome;
 			this.votiDelloStudente = voti || [];
+			//// Recupera la stringa JSON dal localStorage con la chiave "studenti"
+			const studentiJSON = localStorage.getItem("studenti");
+			//// Se la stringa JSON è presente, la converte in un oggetto(altrimenti, imposta un array vuoto [])
+			this.studentiJSON = studentiJSON ? JSON.parse(studentiJSON) : [];
 		}
 
 		toString() {
 			return `${this.nome} ${this.cognome}`;
 		}
-
-		aggiungiVoto(punteggio, data) {
-			const voto = { punteggio, data };
-			this.votiDelloStudente.push(voto);
-			console.log(
-				`Voto aggiunto per ${this.nome} ${this.cognome}: ${punteggio} (${data})`
-			);
-		}
 	}
 
 	class Elenco {
-		studenti = [];
+		// ... (codice della classe Elenco)
 
-		aggiungiStudente(nome, cognome, voti) {
-			const studente = new Studente(nome, cognome, voti);
-			this.studenti.push(studente);
-			this.studenti.sort((a, b) => a.cognome.localeCompare(b.cognome));
-			console.log("Elemento aggiunto: " + studente);
+		salvaLocalStorage() {
+			const studentiJSON = JSON.stringify(this.studenti);
+			localStorage.setItem("studenti", studentiJSON);
 		}
-
-		appello() {
-			console.log(
-				`Gli studenti: ${this.studenti
-					.map((studente) => studente.toString())
-					.join(", ")}`
-			);
-		}
-
-		aggiornaStudente(indice, nuovoNome, nuovoCognome, nuoviVoti) {
-			if (indice >= 0 && indice < this.studenti.length) {
-				const studente = this.studenti[indice];
-				studente.nome = nuovoNome;
-				studente.cognome = nuovoCognome;
-				studente.votiDelloStudente = nuoviVoti;
-				console.log(
-					`Elemento aggiornato all'indice ${indice}: ${nuovoNome} ${nuovoCognome}`
-				);
-			} else {
-				console.log("Indice non valido. Impossibile aggiornare l'elemento.");
-			}
-		}
-
-		rimuoviStudente(indice) {
-			if (indice >= 0 && indice < this.studenti.length) {
-				this.studenti.splice(indice, 1);
-				console.log("Elemento rimosso.");
-			} else {
-				console.log("Indice non valido. Impossibile rimuovere l'elemento.");
-			}
-		}
+	}
+	function mostraMessaggio(messaggio, successo = true) {
+		const messaggiElement = document.getElementById("messaggi");
+		messaggiElement.innerHTML = `<div class="${
+			successo ? "successo" : "errore"
+		}">${messaggio}</div>`;
 	}
 
 	const elenco = new Elenco();
@@ -111,23 +102,11 @@ document.addEventListener("DOMContentLoaded", function () {
 	// Visualizzazione degli studenti dopo l'aggiornamento
 	elenco.appello();
 
-	elenco.aggiungiStudente(new Studente("fatima", "cangialosi"));
-	elenco.aggiungiStudente(new Studente("alberto", "cangialosi"));
-	elenco.aggiungiStudente(new Studente("gianmarco", "culò"));
+	elenco.aggiungiStudente("fatima", "cangialosi");
+	elenco.aggiungiStudente("alberto", "cangialosi");
+	elenco.aggiungiStudente("gianmarco", "culò");
 
 	// Visualizzazione degli elementi
 	elenco.appello();
+	elenco.salvaLocalStorage();
 });
-
-/* Rimozione di un elemento
-elenco.rimuoviStudente(2);
-
-// Visualizzazione degli elementi dopo la rimozione
-elenco.appello();
-
-const studente2 = new Studente("Piero", "Carimi");
-studente2.aggiungiVoto(8, "2023-01-10");
-studente2.aggiungiVoto(9, "2023-02-15");
-
-console.log(studente2.votiDelloStudente);
-*/
